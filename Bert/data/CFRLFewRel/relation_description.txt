@@ -1,0 +1,80 @@
+0	place served by transport hub	territorial entity or entities served by this transport hub (airport, train station, etc.)	
+1	mountain range	range or subrange to which the geographical item belongs	
+2	religion	religion of a person, organization or religious building, or associated with this subject	
+3	participating team	teams that actively takes/took part in an event or process	
+4	contains administrative territorial entity	direct subdivisions of an administrative territorial entity	
+5	head of government	head of the executive power of this town, city, municipality, state, country, or other governmental body	
+6	country of citizenship	the object is a country that recognizes the subject as its citizen	
+7	original network	network or service that originally broadcast a radio or television program	
+8	heritage designation	heritage designation of a cultural or natural site	
+9	performer	actor, musician, band or other performer associated with this role or musical work	
+10	participant of	event in which a person or organization was/is a participant	
+11	position held	subject currently or formerly holds the object position or public office	
+12	has part	part of this subject	
+13	location of formation	location where a group or organization was formed	
+14	located on terrain feature	located on the specified physical/geophysical feature	
+15	architect	person or architectural firm responsible for designing this building	
+16	country of origin	country of origin of this item (creative work, food, phrase, product, etc.)	
+17	publisher	organization or person responsible for publishing books, periodicals, printed music, podcasts, games or software	
+18	director	director of film, TV-series, stageplay, video game or similar	
+19	father	male parent of the subject	
+20	developer	organization or person that developed the item	
+21	military branch	branch to which this military unit, award, office, or person belongs	
+22	mouth of the watercourse	the body of water to which the watercourse drains	
+23	nominated for	award nomination received by a person, organisation or creative work	
+24	movement	literary, artistic, scientific or philosophical movement or scene associated with this person or work	
+25	successful candidate	person elected after the election	
+26	followed by	immediately following item in a series of which the subject is a part	
+27	manufacturer	manufacturer or producer of this product	
+28	instance of	that class of which this subject is a particular example and member	
+29	after a work by	artist whose work strongly inspired/ was copied in this item	
+30	member of political party	the political party of which a person is or has been a member or otherwise affiliated	
+31	licensed to broadcast to	place that a radio/TV station is licensed/required to broadcast to	
+32	headquarters location	city, where an organization's headquarters is or has been situated	
+33	sibling	the subject and the object have the same parents	
+34	instrument	musical instrument that a person plays or teaches or used in a music occupation	
+35	country	sovereign state of this item (not to be used for human beings)	
+36	occupation	occupation of a person	
+37	residence	the place where the person is or has been, resident	
+38	work location	location where persons or organisations were actively participating in employment, business or other work	
+39	subsidiary	subsidiary of a company or organization; generally a fully owned separate corporation	
+40	participant	person, group of people or organization (object) that actively takes/took part in an event or process	
+41	operator	person, profession, or organization that operates the equipment, facility, or service	
+42	characters	characters which appear in this item (like plays, operas, operettas, books, comics, films, TV series, video games)	
+43	occupant	person or organization occupying property	
+44	genre	creative work's genre or an artist's field of work	
+45	operating system	operating system (OS) on which a software works or the OS installed on hardware	
+46	owned by	owner of the subject	
+47	platform	platform for which a work was developed or released, or the specific platform version of a software product	
+48	tributary	watercourse that flows into an other one	
+49	winner	winner of a competition or similar event	
+50	said to be the same as	this item is said to be the same as that item, but it's uncertain or disputed	
+51	composer	person who wrote the music	
+52	league	league in which team or player plays or has played in	
+53	record label	brand and trademark associated with the marketing of subject music recordings and music videos	
+54	distributor	distributor of a creative work; distributor for a record label; news agency; film distributor	
+55	screenwriter	person who wrote the script for subject item	
+56	sports season of league or competition	property that shows the competition of which the item is a season	
+57	taxon rank	level in a taxonomic hierarchy	
+58	location	location of the object, structure or event	
+59	field of work	specialization of a person or organization	
+60	language of work or name	language associated with this creative work (such as books, shows, songs, broadcasts or websites) or a name	
+61	applies to jurisdiction	the item (institution, law, public office, public register...) or statement belongs to or has power over or applies to the value (a territorial jurisdiction: a country, state, municipality, ...)	
+62	notable work	notable scientific, artistic or literary work, or other work of significance among subject's works	
+63	located in the administrative territorial entity	the item is located on the territory of the following administrative entity	
+64	crosses	obstacle which this bridge crosses over or this tunnel goes under	
+65	original language of film or TV show	language in which a film or a performance work was originally created	
+66	competition class	official classification by a regulating body under which the subject (events, teams, participants, or equipment) qualifies for inclusion	
+67	part of	object of which the subject is a part	
+68	sport	sport that the subject participates or participated in or is associated with	
+69	constellation	the area of the celestial sphere of which the subject is a part	
+70	position played on team / speciality	position or specialism of a player on a team	
+71	located in or next to body of water	body of water on or next to which a place is located	
+72	voice type	person's voice type	
+73	follows	immediately prior item in a series of which the subject is a part	
+74	spouse	the subject has the object as their spouse (husband, wife, partner, etc.)	
+75	military rank	military rank achieved by a person, or military rank associated with a position	
+76	mother	female parent of the subject	
+77	member of	organization, club or musical group to which the subject belongs	
+78	child	subject has object as child	
+79	main subject	primary topic of a work	

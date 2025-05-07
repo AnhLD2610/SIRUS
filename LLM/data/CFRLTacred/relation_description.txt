@@ -1,0 +1,41 @@
+org:founded	organization founded	an organization was found in a date
+org:subsidiaries	organization subsidiaries	an organization 's subsidiary is an organization
+per:date_of_birth	person date of birth	a person was born in a date
+org:city_of_headquarters	organization city of headquarters	an organization is located in a city
+per:age	person age	a person 's age is a number
+per:charges	person charges	a person was charged with an event
+per:countries_of_residence	person countries of residence	a person is living in a country
+per:country_of_birth	person country of birth	a person was born in a country
+per:stateorprovinces_of_residence	person stateorprovinces of residence	a person is living in a state or province
+zwebsite	organization website	an organization 's website is an url
+per:cities_of_residence	person cities of residence	a person is living in a city
+per:parents	person parents	a person 's parent is a person
+per:employee_of	person employee of	a person is an employee of an organization
+per:city_of_birth	person city of birth	a person was born in a city
+org:parents	organization parents	an organization 's parent is an organization
+org:political/religious_affiliation	organization political religious affiliation	an organization is the member of a religion
+per:schools_attended	person schools attended	a person 's school is an organization
+per:country_of_death	person country of death	a person was died in a country
+per:children	person children	a person 's children is a person
+org:top_members/employees	organization top members employees	an organization 's employer is a person
+per:date_of_death	person date of death	a person was died on a date
+org:members	organization members	an organization 's member is an organization
+org:alternate_names	organization alternate names	a person 's alias is a person
+per:religion	person religion	an person is the member of a religion
+org:member_of	organization member of	an organization is the member of an organization
+per:cause_of_death	person cause of death	a person was died of an event
+per:origin	person origin	a person 's nationality is a country
+org:shareholders	organization shareholders	an organization was invested by a person
+per:stateorprovince_of_birth	person stateorprovince of birth	a person was died in a state or province
+per:title	person title	a person 's title is a title
+org:number_of_employees/members	organization number of employees members	the number of an organization 's employees is a number
+org:dissolved	organization dissolved	an organization was dissolved in a date
+org:country_of_headquarters	organization country of headquarters	an organization is located in a country
+per:alternate_names	person alternate names	a person 's alias is a person
+per:siblings	person siblings	a person 's sibling is a person
+org:stateorprovince_of_headquarters	organization stateorprovince of headquarters	an organization is located in a state or province
+per:spouse	person spouse	a person 's spouse is a person
+per:other_family	person other family	a person 's relative is a person
+per:city_of_death	person city of death	a person was died in a city
+per:stateorprovince_of_death	person stateorprovince of death	a person was died in a state or province
+org:founded_by	organization founded by	an organization was found by a person
