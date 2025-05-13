@@ -538,21 +538,21 @@ if __name__ == '__main__':
     parser.add_argument("--task_name", default="FewRel", type=str)
     parser.add_argument("--num_k", default=5, type=int)
     parser.add_argument("--num_gen", default=2, type=int)
-    parser.add_argument("--lambda_1", default=1, type=int)
-    parser.add_argument("--lambda_2", default=1, type=int)
-    parser.add_argument("--lambda_3", default=0.25, type=int)
-    parser.add_argument("--temperature", default=0.01, type=int)
-    parser.add_argument("--distance_threshold", default=0.1, type=int)
-    parser.add_argument("--top_k", default=5, type=int)
+    parser.add_argument("--lambda_1", default=1.0, type=float)
+    parser.add_argument("--lambda_2", default=1.0, type=float)
+    parser.add_argument("--lambda_3", default=0.25, type=float)         # ⚠️ sửa từ int → float
+    parser.add_argument("--temperature", default=0.01, type=float)     # ⚠️ sửa từ int → float
+    parser.add_argument("--distance_threshold", default=0.1, type=float)  # ⚠️ sửa từ int → float
+
     # Tacred
     # parser.add_argument("--task_name", default="Tacred", type=str)
     # parser.add_argument("--num_k", default=5, type=int)
     # parser.add_argument("--num_gen", default=5, type=int)
-    # parser.add_argument("--lambda_1", default=1, type=int)
-    # parser.add_argument("--lambda_2", default=2, type=int)
-    # parser.add_argument("--lambda_3", default=0.25, type=int)
-    # parser.add_argument("--temperature", default=0.05, type=int)
-    # parser.add_argument("--distance_threshold", default=0.3, type=int)
+    # parser.add_argument("--lambda_1", default=1, type=float)
+    # parser.add_argument("--lambda_2", default=2, type=float)
+    # parser.add_argument("--lambda_3", default=0.25, type=float)
+    # parser.add_argument("--temperature", default=0.05, type=float)
+    # parser.add_argument("--distance_threshold", default=0.3, type=float)
 
     args = parser.parse_args()
     config = Config('config.ini')

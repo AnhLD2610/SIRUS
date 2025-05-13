@@ -554,11 +554,11 @@ if __name__ == '__main__':
     parser.add_argument("--task_name", default="FewRel", type=str)
     parser.add_argument("--num_k", default=5, type=int)
     parser.add_argument("--num_gen", default=2, type=int)
-    parser.add_argument("--lambda_1", default=1, type=int)
-    parser.add_argument("--lambda_2", default=2, type=int)
-    parser.add_argument("--lambda_3", default=0.5, type=int)
-    parser.add_argument("--temperature", default=0.05, type=int)
-    parser.add_argument("--distance_threshold", default=0.3, type=int)
+    parser.add_argument("--lambda_1", default=1, type=float)
+    parser.add_argument("--lambda_2", default=2, type=float)
+    parser.add_argument("--lambda_3", default=0.5, type=float)
+    parser.add_argument("--temperature", default=0.05, type=float)
+    parser.add_argument("--distance_threshold", default=0.3, type=float)
     parser.add_argument("--model", default='llama3', type=str) # llama3, llama2, bge, mistral
 
     args = parser.parse_args()
