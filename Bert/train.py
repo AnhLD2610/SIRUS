@@ -168,8 +168,8 @@ class Manager(object):
                 batch_instance['mask'] = torch.tensor([seen_des[self.id2rel[label.item()]]['mask'] for label in labels]).to(self.config.device)
 
                 
-                hidden, attention = encoder(instance) # b, dim
-                rep_des, attention_des = encoder(batch_instance, is_des = True) # b, dim
+                hidden= encoder(instance) # b, dim
+                rep_des = encoder(batch_instance, is_des = True) # b, dim
 
                 with torch.no_grad():
                     rep_seen_des = []
@@ -178,7 +178,7 @@ class Manager(object):
                             'ids' : torch.tensor([list_seen_des[i2]['ids']]).to(self.config.device),
                             'mask' : torch.tensor([list_seen_des[i2]['mask']]).to(self.config.device)
                         }
-                        hidden_des, _ = encoder(sample, is_des=True)
+                        hidden_des = encoder(sample, is_des=True)
                         hidden_des = hidden_des.detach().cpu().data
                         rep_seen_des.append(hidden_des)
                     rep_seen_des = torch.cat(rep_seen_des, dim=0)
@@ -256,127 +256,6 @@ class Manager(object):
                     sys.stdout.write('CurrentTrain: epoch {0:2}, batch {1:5} | loss: {2:2.7f}'.format(i, batch_num, loss.item()) + '\r')
                 sys.stdout.flush() 
         print('')             
-    
-    def train_model_with_distil(self, encoder, encoder_pre, training_data, seen_des, seen_relations, list_seen_des, is_memory=False):
-        data_loader = get_data_loader_BERT(self.config, training_data, shuffle=True)
-
-        optimizer = optim.Adam(params=encoder.parameters(), lr=self.config.lr)
-
-        encoder.train()
-        encoder_pre.eval()
-        epoch = self.config.epoch_mem if is_memory else self.config.epoch
-
-        triplet = TripletLoss()
-        optimizer.zero_grad()
-
-        relation_2_cluster = {}
-        rep_seen_des = []
-        relationid2_clustercentroids = {}
-
-        for i in range(epoch):         
-            for batch_num, (instance, labels, ind) in enumerate(data_loader):
-                for k in instance.keys():
-                    instance[k] = instance[k].to(self.config.device)
-
-                batch_instance = {'ids': [], 'mask': []} 
-
-                batch_instance['ids'] = torch.tensor([seen_des[self.id2rel[label.item()]]['ids'] for label in labels]).to(self.config.device)
-                batch_instance['mask'] = torch.tensor([seen_des[self.id2rel[label.item()]]['mask'] for label in labels]).to(self.config.device)
-
-                
-                hidden, attention = encoder(instance) # b, dim
-                rep_des, attention_des = encoder(batch_instance, is_des = True) # b, dim
-
-                with torch.no_grad():
-                    hidden_pre, attention_pre = encoder_pre(instance) # b, dim
-                    rep_des_pre, attention_des_pre = encoder_pre(batch_instance, is_des = True) # b, dim
-
-                with torch.no_grad():
-                    rep_seen_des = []
-                    for i2 in range(len(list_seen_des)):
-                        sample = {
-                            'ids' : torch.tensor([list_seen_des[i2]['ids']]).to(self.config.device),
-                            'mask' : torch.tensor([list_seen_des[i2]['mask']]).to(self.config.device)
-                        }
-                        hidden_des, _ = encoder(sample, is_des=True)
-                        hidden_des = hidden_des.detach().cpu().data
-                        rep_seen_des.append(hidden_des)
-                    rep_seen_des = torch.cat(rep_seen_des, dim=0)
-                    clusters, clusters_centroids = self.get_cluster_and_centroids(rep_seen_des)
-                flag = 0
-                if len(clusters) == max(clusters) + 1:
-                    flag = 1
-
-                # print(clusters)
-
-                relationid2_clustercentroids = {}
-                for index, rel in enumerate(seen_relations):
-                    relationid2_clustercentroids[self.rel2id[rel]] = clusters_centroids[clusters[index]]
-
-                relation_2_cluster = {}
-
-                for i1 in range(len(seen_relations)):
-                    relation_2_cluster[self.rel2id[seen_relations[i1]]] = clusters[i1]
-
-                loss2 = self.moment.mutual_information_loss_cluster(hidden, rep_des, labels, temperature=args.temperature,relation_2_cluster=relation_2_cluster)  # Recompute loss2
-
-                loss4 = self.moment.distillation_loss_att(attention_des_pre, attention_des) + self.moment.distillation_loss_att(attention_pre, attention)
-                    
-                cluster_centroids = []
-
-                for label in labels:
-                    cluster_centroids.append(relationid2_clustercentroids[label.item()])
-
-                cluster_centroids  = torch.stack(cluster_centroids, dim = 0).to(self.config.device)
-                
-                nearest_cluster_centroids = []
-                for hid in hidden:
-                    cos_similarities = torch.nn.functional.cosine_similarity(hid.unsqueeze(0), cluster_centroids, dim=1)
-
-                    try:
-                        top2_similarities, top2_indices = torch.topk(cos_similarities, k=2, dim=0)
-
-                        if len(top2_indices) > 1:
-                            top2_centroids = relationid2_clustercentroids[labels[top2_indices[1].item()].item()]
-                        else:
-                            top2_centroids = relationid2_clustercentroids[labels[torch.argmax(cos_similarities).item()].item()]
-
-                    except RuntimeError as e:
-                        print(f"RuntimeError in top-k selection: {e}")
-                        top2_centroids = relationid2_clustercentroids[labels[torch.argmax(cos_similarities).item()].item()]
-
-                    nearest_cluster_centroids.append(top2_centroids)
-
-                nearest_cluster_centroids = torch.stack(nearest_cluster_centroids, dim = 0).to(self.config.device)
-
-                if flag == 0:
-                    loss1 = self.moment.contrastive_loss(hidden, labels, is_memory, des =rep_des, relation_2_cluster = relation_2_cluster)
-
-                    loss3 = triplet(hidden, rep_des,  cluster_centroids) + triplet(hidden, cluster_centroids, nearest_cluster_centroids)
-
-                    loss = args.lambda_1*loss1 + args.lambda_2*loss2 + args.lambda_3*loss3 + loss4
-
-                else:
-                    loss1 = self.moment.contrastive_loss(hidden, labels, is_memory, des =rep_des, relation_2_cluster = relation_2_cluster)
-
-                    loss = args.lambda_1*loss1 + args.lambda_2*loss2  + loss4 
-         
-                loss.backward()
-                optimizer.step()
-                optimizer.zero_grad()
-                # update moment
-                if is_memory:
-                    self.moment.update_des(ind, hidden.detach().cpu().data, rep_des.detach().cpu().data, is_memory=True)
-                    # self.moment.update_allmem(encoder)
-                else:
-                    self.moment.update_des(ind, hidden.detach().cpu().data, rep_des.detach().cpu().data, is_memory=False)
-
-                if is_memory:
-                    sys.stdout.write('MemoryTrain:  epoch {0:2}, batch {1:5} | loss: {2:2.7f}'.format(i, batch_num, loss.item()) + '\r')
-                else:
-                    sys.stdout.write('CurrentTrain: epoch {0:2}, batch {1:5} | loss: {2:2.7f}'.format(i, batch_num, loss.item()) + '\r')
-                sys.stdout.flush() 
-        print('')     
 
     def eval_encoder_proto(self, encoder, seen_proto, seen_relid, test_data):
         batch_size = 16
@@ -582,12 +461,8 @@ class Manager(object):
             for rel in current_relations:
                 training_data_initialize += training_data[rel]
             self.moment.init_moment(encoder, training_data_initialize, is_memory=False)
-            encoder_pre = copy.deepcopy(encoder)
-            if step>0:
-                self.train_model_with_distil(encoder, encoder_pre, training_data_initialize, seen_des, seen_relations, list_seen_des, is_memory=False)
-
-            else:
-                self.train_model(encoder, training_data_initialize, seen_des, seen_relations, list_seen_des, is_memory=False)
+           
+            self.train_model(encoder, training_data_initialize, seen_des, seen_relations, list_seen_des, is_memory=False)
 
             # Select memory samples
             for rel in current_relations:

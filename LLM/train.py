@@ -45,18 +45,27 @@ class Manager(object):
             dist.append(torch.unsqueeze(dist_i, 0)) # (N) --> (1,N)
         dist = torch.cat(dist, 0) # (B, N)
         return dist
+    # def _cosine_similarity(self, x1, x2):
+    #     '''
+    #     input: x1 (B, H), x2 (N, H) ; N is the number of relations
+    #     return: (B, N)
+    #     '''
+    #     b = x1.size()[0]
+    #     cos = nn.CosineSimilarity(dim=1)
+    #     sim = []
+    #     for i in range(b):
+    #         sim_i = cos(x2, x1[i])
+    #         sim.append(torch.unsqueeze(sim_i, 0))
+    #     sim = torch.cat(sim, 0)
+    #     return sim
+
     def _cosine_similarity(self, x1, x2):
-        '''
-        input: x1 (B, H), x2 (N, H) ; N is the number of relations
-        return: (B, N)
-        '''
-        b = x1.size()[0]
-        cos = nn.CosineSimilarity(dim=1)
-        sim = []
-        for i in range(b):
-            sim_i = cos(x2, x1[i])
-            sim.append(torch.unsqueeze(sim_i, 0))
-        sim = torch.cat(sim, 0)
+
+        x1_norm = F.normalize(x1, p=2, dim=1)  # (B, H)
+        x2_norm = F.normalize(x2, p=2, dim=1)  # (N, H)
+
+        sim = torch.matmul(x1_norm, x2_norm.T)  # (B, N)
+
         return sim
     
 

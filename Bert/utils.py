@@ -202,58 +202,6 @@ class Moment:
         infoNCE_loss = -torch.log(softmax_probs[:, 0]).mean()
 
         return infoNCE_loss
-    
-    # def kl_loss():
-
-    # def mse_loss():
-
-
-
-    def distillation_loss_att(
-        attention_teacher_layers,
-        attention_student_layers,
-        top_k_val: int
-    ):
-
-        num_layers_teacher = len(attention_teacher_layers)
-        num_layers_student = len(attention_student_layers)
-
-        num_distill_layers = min(num_layers_teacher, num_layers_student)
-
-        total_loss = 0.0
-        actual_layers_processed = 0
-
-        for i in range(num_distill_layers):
-            att_teacher_layer = attention_teacher_layers[i]
-            att_student_layer = attention_student_layers[i]
-
-            batch_size, _, seq_len, _ = att_teacher_layer.shape
-
-            effective_k = min(top_k_val, seq_len)
-
-            # Output shape [B, N, N] (N=seq_len)
-            mean_att_teacher = att_teacher_layer.mean(dim=1)
-            mean_att_student = att_student_layer.mean(dim=1)
-
-            # Shape: [B, N]
-            token_importance_scores = mean_att_teacher.sum(dim=1) 
-
-            # top k 
-            _, top_k_indices = torch.topk(token_importance_scores, effective_k, dim=1, sorted=True)
-
-            idx_row = top_k_indices  # [B, K]
-            # Create batch indices for advanced indexing
-            batch_idx = torch.arange(batch_size, device=att_teacher_layer.device).view(-1, 1)  # [B, 1]
-            sub_matrix_teacher = mean_att_teacher[batch_idx, idx_row]  # [B, K]
-            sub_matrix_student = mean_att_student[batch_idx, idx_row]  # [B, K]
-
-            # Distillation loss 
-            layer_loss = F.mse_loss(sub_matrix_student, sub_matrix_teacher.detach())
-            total_loss += layer_loss
-            actual_layers_processed += 1
-
-        return total_loss / actual_layers_processed
-
 
 
 from openai import OpenAI

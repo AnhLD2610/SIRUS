@@ -94,10 +94,10 @@ class EncodingModel(nn.Module):
                 masks.append(mask)
             if is_des:
                 average_outputs_words = torch.mean(outputs_words, dim=1)
-                return average_outputs_words, output_attention
+                return average_outputs_words
             else:
                 mask_hidden = outputs_words[tensor_range, torch.tensor(masks)] # (b, h)
-                return mask_hidden, output_attention
+                return mask_hidden
     
         # return e1:e2 hidden
         elif pattern == 'marker':

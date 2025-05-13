@@ -235,11 +235,7 @@ class Moment:
 
         return infoNCE_loss
     
-    # def distilation_loss_attention()
-        
-    #     [[1,2,3],
-    #      [4,5,6],
-    #      [7,8,9]]
+
 # # for openai
 # @retry(tries=10, delay=1)
 # def gpt(input, t=0, key=None):
