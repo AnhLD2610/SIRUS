@@ -1,5 +1,5 @@
 python train.py \
-  --task_name FewRel \
+  --task_name Tacred \
   --num_k 5 \
   --lambda_1 1 \
   --lambda_2 2 \
