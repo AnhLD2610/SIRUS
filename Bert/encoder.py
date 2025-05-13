@@ -68,7 +68,9 @@ class EncodingModel(nn.Module):
         pattern = self.config.pattern
         if pattern == 'softprompt' or pattern == 'hybridprompt':
             input_embedding = self.embedding_input(inputs['ids'])
-            outputs_words = self.encoder(inputs_embeds=input_embedding, attention_mask=inputs['mask'])[0]
+            outputs_words = self.encoder(inputs_embeds=input_embedding, attention_mask=inputs['mask'], output_attentions=True)
+            output_attention = outputs_words.attentions
+            outputs_words = outputs_words[0]
         else:
             outputs_words = self.encoder(inputs['ids'], attention_mask=inputs['mask'])[0] # (b, max_length, h)
             # outputs_words_des = self.encoder(inputs['ids_des'], attention_mask=inputs['mask_des'])[0] # (b, max_length, h)
@@ -92,10 +94,10 @@ class EncodingModel(nn.Module):
                 masks.append(mask)
             if is_des:
                 average_outputs_words = torch.mean(outputs_words, dim=1)
-                return average_outputs_words
+                return average_outputs_words, output_attention
             else:
                 mask_hidden = outputs_words[tensor_range, torch.tensor(masks)] # (b, h)
-                return mask_hidden
+                return mask_hidden, output_attention
     
         # return e1:e2 hidden
         elif pattern == 'marker':
